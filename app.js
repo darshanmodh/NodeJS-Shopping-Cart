@@ -62,9 +62,11 @@ app.use(function(req, res, next) {
 
 var pages = require('./routes/pages.js');
 var adminPages = require('./routes/adminPages.js');
+var adminCategories = require('./routes/adminCategories.js');
 
 app.use('/', pages);
 app.use('/admin/pages', adminPages);
+app.use('/admin/categories', adminCategories);
 
 var port = 3000;
 app.listen(port, function() {
