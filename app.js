@@ -23,6 +23,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.errors = null;
 
+var Page = require('./models/page');
+Page.find({}).sort({sorting: 1}).exec(function(err, pages) {
+    if(err) console.log(err);
+    else app.locals.pages = pages;
+});
+
 // express-fileupload
 app.use(fileUpload());
 
