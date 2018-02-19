@@ -5,6 +5,7 @@ var config = require('./config/database');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var expressValidator = require('express-validator');
+var fileUpload = require('express-fileupload');
 
 mongoose.connect(config.database);
 var db = mongoose.connection;
@@ -21,6 +22,9 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.errors = null;
+
+// express-fileupload
+app.use(fileUpload());
 
 // body parser
 app.use(bodyParser.urlencoded( {extended: false} ));
@@ -50,6 +54,24 @@ app.use(expressValidator({
             msg: msg,
             value: value
         };        
+    },
+
+    customValidators: {
+        isImage: function(value, filename) {
+            var extension = (path.extname(filename)).toLowerCase();
+            switch(extension) {
+                case '.jpg':
+                    return '.jpg';
+                case '.png':
+                    return '.png';
+                case '.jpeg':
+                    return '.jpeg';
+                case '':
+                    return '.jpg';
+                default:
+                    return false;
+            }
+        }
     }
 }));
 
@@ -63,10 +85,12 @@ app.use(function(req, res, next) {
 var pages = require('./routes/pages.js');
 var adminPages = require('./routes/adminPages.js');
 var adminCategories = require('./routes/adminCategories.js');
+var adminProducts = require('./routes/adminProducts.js');
 
 app.use('/', pages);
 app.use('/admin/pages', adminPages);
 app.use('/admin/categories', adminCategories);
+app.use('/admin/products', adminProducts);
 
 var port = 3000;
 app.listen(port, function() {
