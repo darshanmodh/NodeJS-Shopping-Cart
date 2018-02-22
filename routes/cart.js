@@ -97,4 +97,10 @@ router.get('/clear', function(req, res) {
     res.redirect('/cart/checkout');
 });
 
+router.get('/buynow', function(req, res) {
+    delete req.session.cart;
+    
+    res.sendStatus(200);
+});
+
 module.exports = router;
