@@ -3,7 +3,10 @@ var router = express.Router();
 
 var Page = require('../models/page');
 
-router.get('/', function(req, res) {
+var auth = require('../config/auth');
+var isAdmin = auth.isAdmin;
+
+router.get('/', isAdmin, function(req, res) {
     Page.find({}).sort({sorting: 1}).exec(function(err, pages) {
         res.render('admin/pages', {
             pages: pages
@@ -11,7 +14,7 @@ router.get('/', function(req, res) {
     });
 });
 
-router.get('/add-page', function(req, res) {
+router.get('/add-page', isAdmin, function(req, res) {
     var title = "";
     var slug = "";
     var content = "";
@@ -106,7 +109,7 @@ router.post('/reorder-pages', function(req, res) {
     });
 });
 
-router.get('/edit-page/:id', function(req, res) {
+router.get('/edit-page/:id', isAdmin, function(req, res) {
     Page.findById(req.params.id, function(err, page) {
         if(err) 
             return console.log(err);
@@ -168,7 +171,7 @@ router.post('/edit-page/:id', function(req, res) {
                             else req.app.locals.pages = pages;
                         });
 
-                        req.flash('success', 'Page added');
+                        req.flash('success', 'Page Edited');
                         res.redirect('/admin/pages/edit-page/'+id);
                     });
                 });
@@ -177,7 +180,7 @@ router.post('/edit-page/:id', function(req, res) {
     }
 });
 
-router.get('/delete-page/:id', function(req, res) {
+router.get('/delete-page/:id', isAdmin, function(req, res) {
     Page.findByIdAndRemove(req.params.id, function(err) {
         if(err)
             return console.log(err);

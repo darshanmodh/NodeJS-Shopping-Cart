@@ -3,6 +3,8 @@ var router = express.Router();
 var Product = require('../models/product');
 var Category = require('../models/category');
 var fs = require('fs-extra');
+var auth = require('../config/auth');
+var isUser = auth.isUser;
 
 router.get('/', function(req, res) {
     Product.find(function(err, products) {

@@ -26,7 +26,7 @@
     </div>
 
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-      <a class="navbar-brand" href="/">CMS Shopping Cart</a>
+      <a class="navbar-brand" href="/">Shopping Cart</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -37,7 +37,7 @@
             <% if(page.slug == "home") { %>
               <li class="nav-item"><a class="nav-link" href="/"> <%= page.title %> </a></li>
             <% } else { %>
-              <li class="nav-item"><a class="nav-link" href="<%= page.slug %>"> <%= page.title %> </a></li>
+              <li class="nav-item"><a class="nav-link" href="/<%= page.slug %>"> <%= page.title %> </a></li>
             <% } %>
           <% }); %>
         </ul>
