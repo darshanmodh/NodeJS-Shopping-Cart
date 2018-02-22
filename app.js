@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var expressValidator = require('express-validator');
 var fileUpload = require('express-fileupload');
+var passport = require('passport');
 
 mongoose.connect(config.database);
 var db = mongoose.connection;
@@ -94,14 +95,21 @@ app.use(function(req, res, next) {
     next();
 });
 
+// passport
+require('./config/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.get('*', function(req, res, next) {
     res.locals.cart = req.session.cart;
+    res.locals.user = req.user || null;
     next();
 });
 
 var pages = require('./routes/pages.js');
 var products = require('./routes/products.js');
 var cart = require('./routes/cart.js');
+var users = require('./routes/users.js');
 var adminPages = require('./routes/adminPages.js');
 var adminCategories = require('./routes/adminCategories.js');
 var adminProducts = require('./routes/adminProducts.js');
@@ -112,6 +120,7 @@ app.use('/admin/categories', adminCategories);
 app.use('/admin/products', adminProducts);
 app.use('/products', products);
 app.use('/cart', cart);
+app.use('/users', users);
 app.use('/', pages);
 
 var port = 3000;
