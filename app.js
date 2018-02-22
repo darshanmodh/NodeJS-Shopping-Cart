@@ -29,6 +29,12 @@ Page.find({}).sort({sorting: 1}).exec(function(err, pages) {
     else app.locals.pages = pages;
 });
 
+var Category = require('./models/category');
+Category.find(function(err, categories) {
+    if(err) console.log(err);
+    else app.locals.categories = categories;
+});
+
 // express-fileupload
 app.use(fileUpload());
 
@@ -89,14 +95,17 @@ app.use(function(req, res, next) {
 });
 
 var pages = require('./routes/pages.js');
+var products = require('./routes/products.js');
 var adminPages = require('./routes/adminPages.js');
 var adminCategories = require('./routes/adminCategories.js');
 var adminProducts = require('./routes/adminProducts.js');
 
-app.use('/', pages);
+// Order matters a lot
 app.use('/admin/pages', adminPages);
 app.use('/admin/categories', adminCategories);
 app.use('/admin/products', adminProducts);
+app.use('/products', products);
+app.use('/', pages);
 
 var port = 3000;
 app.listen(port, function() {
